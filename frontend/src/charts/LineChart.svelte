@@ -3,7 +3,7 @@
   import { axisBottom, axisLeft } from "d3-axis";
   import { quadtree } from "d3-quadtree";
   import { scaleLinear, scaleUtc } from "d3-scale";
-  import { area, line } from "d3-shape";
+  import { area, line, curveStepAfter } from "d3-shape";
   import { getContext } from "svelte";
   import type { Writable } from "svelte/store";
 
@@ -62,10 +62,12 @@
   );
 
   $: lineShape = line<LineChartDatum>()
+    .curve(curveStepAfter)
     .x((d) => x(d.date))
     .y((d) => y(d.value));
 
   $: areaShape = area<LineChartDatum>()
+    .curve(curveStepAfter)
     .x((d) => x(d.date))
     .y1((d) => y(d.value))
     .y0(Math.min(innerHeight, y(0)));
